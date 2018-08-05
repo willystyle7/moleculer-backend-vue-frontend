@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <GetUserNotes msg="Welcome to Your Vue.js App" id=""/>
+    <GetUserNotes msg="Welcome to Your Vue.js App"/>
 
   </div>
 </template>
@@ -9,9 +9,11 @@
 <script>
 import GetUserNotes from "./components/GetUserNotes.vue";
 
+// import JQuery from 'jquery'
+// let $ = JQuery
+
 export default {
-  name: "app",
-  //data() { return {id: ""}  },
+  name: "app",  
   components: {
     GetUserNotes
   }

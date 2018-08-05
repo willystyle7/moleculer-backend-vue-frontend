@@ -2,17 +2,17 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <div>
-      <h6>Enter User Name:</h6>
+      <span>Enter User Name: </span>
       <input type="text" placeholder="User Name" v-model="username">
-      <h6>Enter User Password:</h6>
+      <br><br>
+      <span>Enter User Password: </span>      
       <input type="text" placeholder="User Password" v-model="password">
       <br><br>
       <button v-on:click="getNotes"> Get User Notes</button>
       <br><br>
-      <span id="error" style="color:red" v-text="error"></span>
+      <span id="error" v-text="error"></span>
       <p id="resultNotes" v-text="notes"></p>
     </div>    
-    
   </div>
 </template>
 
@@ -25,20 +25,32 @@ export default {
     return {
       username: "",
       password: "",
-      error: "",
-      notes: ""
+      error: "1",
+      notes: "2"
     };
   },
   props: {
     msg: String
-    //id: String
   },
+  // computed: {
+  //   error: "1",
+  //   notes: "2"
+  // },
   methods: {
     getNotes() {
       // alert(this.username);
       // window.console.log(this.username);
       // window.console.log(this.password);
 
+      //#4 variant jQuery Ajax
+      // let url = `http://192.168.1.2:3000/api/notes/getnotes?username=${
+      //   this.username
+      // }&password=${this.password}`;
+      // $.get(url, function(data, status) {
+      //   alert("Data: " + data + "\nStatus: " + status);
+      // });
+
+      //#3 variant XMLHttpRequest
       let url = `http://192.168.1.2:3000/api/notes/getnotes?username=${
         this.username
       }&password=${this.password}`;
@@ -57,19 +69,25 @@ export default {
       var client = new HttpClient();
       client.get(url, function(response) {
         // do something with response
-        if (typeof(response) === String) {
+        if (typeof response === String) {
           window.console.log(response);
-          this.error = response;
-           window.console.log(this.error)
+          this.error = "error";
+          //window.console.log(this.error);
+          //let errEl = this.document.getElementById("error");
+          //errEl.textContent = "error";
         } else {
           window.console.log(response);
-          this.notes = Array.from(response).join(", ");
-          window.console.log(this.notes);
+          this.notes = "notes";
+
+          //window.console.log(this.notes);
+          // let notesEl = this.document.getElementById("resultNotes");
+          // notesEl.textContent = "notes";
+          // let errEl = this.document.getElementById("error");
+          // errEl.textContent = "";
         }
-        // window.console.log(response);
-        // alert(response);
       });
 
+      //#2 variant fetch
       // const testURL = `http://192.168.1.2:3000/api/notes/getnotes?username=${
       //   this.username
       // }&password=${this.password}`;
@@ -97,6 +115,7 @@ export default {
       //     alert(e);
       //   });
 
+      //#1 variant axios
       // let url = `http://192.168.1.2:3000/api/notes/getnotes?username=${this.username}&password=${this.password}`;
       // axios
       //   .get(url)
