@@ -9,3 +9,4 @@ Backend: http://localhost:3000/
 Frontend: http://localhost:8080/
 /cd vue-front
 /npm install
+/npm run serve

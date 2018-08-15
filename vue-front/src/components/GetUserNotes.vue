@@ -17,7 +17,12 @@
 </template>
 
 <script>
-//const axios = require("axios");
+//need for #4
+import JQuery from "jquery";
+const $ = JQuery;
+
+//need for #1
+const axios = require("axios");
 
 export default {
   name: "GetUserNotes",
@@ -25,8 +30,8 @@ export default {
     return {
       username: "",
       password: "",
-      error: "1",
-      notes: "2"
+      error: "",
+      notes: ""
     };
   },
   props: {
@@ -37,21 +42,16 @@ export default {
   //   notes: "2"
   // },
   methods: {
-    getNotes() {
-      // alert(this.username);
-      // window.console.log(this.username);
-      // window.console.log(this.password);
+    getNotes() {      
 
       //#4 variant jQuery Ajax
-      // let url = `http://192.168.1.2:3000/api/notes/getnotes?username=${
-      //   this.username
-      // }&password=${this.password}`;
+      // let url = `http://localhost:3000/api/notes/getnotes?username=${this.username}&password=${this.password}`;
       // $.get(url, function(data, status) {
       //   alert("Data: " + data + "\nStatus: " + status);
       // });
 
       //#3 variant XMLHttpRequest
-      let url = `http://192.168.1.2:3000/api/notes/getnotes?username=${
+      let url = `http://localhost:3000/api/notes/getnotes?username=${
         this.username
       }&password=${this.password}`;
       var HttpClient = function() {
@@ -67,37 +67,28 @@ export default {
         };
       };
       var client = new HttpClient();
-      client.get(url, function(response) {
+      client.get(url, (response) => {
         // do something with response
-        if (typeof response === String) {
-          window.console.log(response);
-          this.error = "error";
-          //window.console.log(this.error);
-          //let errEl = this.document.getElementById("error");
-          //errEl.textContent = "error";
+        let resp = JSON.parse(response);
+        if (resp.toString() === "wrong username or password") {
+          window.console.log(resp);
+          this.error = "wrong username or password";
+          this.notes = "";  
         } else {
-          window.console.log(response);
-          this.notes = "notes";
-
-          //window.console.log(this.notes);
-          // let notesEl = this.document.getElementById("resultNotes");
-          // notesEl.textContent = "notes";
-          // let errEl = this.document.getElementById("error");
-          // errEl.textContent = "";
+          window.console.log(resp);
+          this.error = "";
+          this.notes = resp.join(', ');          
         }
       });
 
-      //#2 variant fetch
-      // const testURL = `http://192.168.1.2:3000/api/notes/getnotes?username=${
+      // //#2 variant fetch
+      // const testURL = `http://localhost:3000/api/notes/getnotes?username=${
       //   this.username
       // }&password=${this.password}`;
       // const myInit = {
       //   method: "GET",
-      //   mode: "no-cors",
       //   headers: {
-      //     "Access-Control-Allow-Origin": "*",
-      //     Accept: "application/json",
-      //     "Content-Type": "application/json"
+      //     Accept: "application/json"
       //   },
       //   withCredentials: false
       // };
@@ -116,16 +107,16 @@ export default {
       //   });
 
       //#1 variant axios
-      // let url = `http://192.168.1.2:3000/api/notes/getnotes?username=${this.username}&password=${this.password}`;
+      // let url = `http://localhost:3000/api/notes/getnotes?username=${this.username}&password=${this.password}`;     
       // axios
       //   .get(url)
       //   .then(function(response) {
       //     // handle success
-      //     window.console.log(response);
+      //     window.console.log(response.data);
+      //     window.console.log(response.status);
+      //     alert(response.data);
       //   });
-
-      //alert(this.password);
-      //return;
+      // return;
     }
   }
 };
@@ -146,5 +137,8 @@ li {
 }
 a {
   color: #42b983;
+}
+#error {
+  color: red;
 }
 </style>
